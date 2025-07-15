@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #e6d6f7; /* soft lavender */
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        .left {
+            background: #fff0fa; /* very light pinkish-lavender */
+            width: 400px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 2px 0 10px rgba(191, 167, 230, 0.15);
+            border-top-left-radius: 24px;
+            border-bottom-left-radius: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #6d3a7c; /* deep purple */
+        }
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bfa7e6;
+            border-radius: 4px;
+            background: #d4c7dc;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #6d3a7c; /* deep purple */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #a16ae8; /* lighter purple */
+        }
+        .toggle {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .toggle a {
+            color: #a16ae8;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #bfa7e6;
+        }
+        .right img {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(32, 31, 31, 0.08);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left" id="form-container">
+            <form id="login-form">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit">Login</button>
+                <div class="toggle">
+                    Don't have an account? <a onclick="showRegister()">Create Account</a>
+                </div>
+            </form>
+            <form id="register-form" style="display:none;">
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <label for="register-username">Username</label>
+                    <input type="text" id="register-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" name="password" required>
+                </div>
+                <button type="submit">Create Account</button>
+                <div class="toggle">
+                    Already have an account? <a onclick="showLogin()">Login</a>
+                </div>
+            </form>
+        </div>
+        <div class="right">
+            <img src="/static/logo.jpg" alt="Elantia Logo">
+        </div>
+    </div>
+    <script>
+        function showRegister() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+        function showLogin() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        }
+
+        document.getElementById('register-form').onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/users/register/', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            alert(result.message);
+            if(result.success) showLogin();
+        };
+
+        document.getElementById('login-form').onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/users/login/', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            alert(result.message);
+            if(result.success) window.location.href = '/users/home/';
+        };
+    </script>
+</body>
+</html>

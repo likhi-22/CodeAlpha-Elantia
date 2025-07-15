@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elantia - Cart</title>
+    <style>
+        body {
+            background: #f8f8fc;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .cart-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(191, 167, 230, 0.10);
+            padding: 32px 32px 24px 32px;
+        }
+        .cart-title {
+            font-size: 2rem;
+            color: #1a2b3c;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+        .cart-item {
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #eee;
+            padding: 18px 0 18px 0;
+        }
+        .cart-item img {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-right: 18px;
+            background: #f7f2fa;
+            border: 1px solid #e0d7f7;
+        }
+        .cart-item-details {
+            flex: 1;
+        }
+        .cart-item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #222;
+        }
+        .cart-item-qty {
+            font-size: 1rem;
+            color: #444;
+            margin: 6px 0 0 0;
+        }
+        .cart-item-remove {
+            color: #b23b3b;
+            font-size: 1rem;
+            margin-top: 8px;
+            cursor: pointer;
+            text-decoration: underline;
+            background: none;
+            border: none;
+        }
+        .cart-item-price {
+            font-size: 1.1rem;
+            color: #222;
+            font-weight: 500;
+            margin-left: 16px;
+            white-space: nowrap;
+        }
+        .cart-summary {
+            margin-top: 32px;
+            background: #f7f7fb;
+            border-radius: 10px;
+            padding: 24px 24px 18px 24px;
+        }
+        .summary-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 16px;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        .summary-row .discount {
+            color: #1a8c3a;
+        }
+        .summary-row .total {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .summary-note {
+            color: #1a8c3a;
+            margin-top: 8px;
+            font-size: 1rem;
+        }
+        .buy-btn {
+            margin-top: 24px;
+            width: 100%;
+            background: #1766e0;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 14px 0;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .buy-btn:hover {
+            background: #0e4ea8;
+        }
+        .empty-cart {
+            text-align: center;
+            color: #888;
+            font-size: 1.2rem;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <div class="cart-title">My Cart</div>
+        <div id="cart-items"></div>
+        <div id="cart-summary"></div>
+    </div>
+    <script>
+        // Load cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const cartItemsDiv = document.getElementById('cart-items');
+        const cartSummaryDiv = document.getElementById('cart-summary');
+
+        function renderCart() {
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="empty-cart">Your cart is empty.</div>';
+                cartSummaryDiv.innerHTML = '';
+                return;
+            }
+            let html = '';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                let price = parseInt(item.price.replace(/[^\d]/g, ''));
+                total += price;
+                html += `<div class="cart-item">
+                    <img src="${item.img || '{% static 'logo.jpg' %}'}" alt="${item.name.toLowerCase().replace(/ /g,'-')}">
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-qty">Quantity: 1</div>
+                        <button class="cart-item-remove" onclick="removeItem(${idx})">Remove</button>
+                    </div>
+                    <div class="cart-item-price">₹${price.toLocaleString()}</div>
+                </div>`;
+            });
+            cartItemsDiv.innerHTML = html;
+            renderSummary(total, cart.length);
+        }
+
+        function renderSummary(total, count) {
+            let discount = Math.round(total * 0.08); // 8% discount
+            let orderTotal = total - discount;
+            cartSummaryDiv.innerHTML = `
+                <div class="cart-summary">
+                    <div class="summary-title">Price Details (${count} Item${count>1?'s':''})</div>
+                    <div class="summary-row"><span>Total Product Price</span><span>+₹${total.toLocaleString()}</span></div>
+                    <div class="summary-row"><span class="discount">Total Discounts</span><span class="discount">-₹${discount.toLocaleString()}</span></div>
+                    <div class="summary-row total"><span>Order Total</span><span>₹${orderTotal.toLocaleString()}</span></div>
+                    <div class="summary-note">Yay! Your total discount is ₹${discount}</div>
+                    <button class="buy-btn" onclick="buyNow()">Buy Now</button>
+                </div>
+            `;
+        }
+
+        function removeItem(idx) {
+            cart.splice(idx, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function buyNow() {
+            // Save the current cart as a new order
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            if (cart.length > 0) {
+                orders.push(cart);
+                localStorage.setItem('orders', JSON.stringify(orders));
+            }
+            alert('Thank you for your purchase! Your order has been placed.');
+            localStorage.removeItem('cart');
+            renderCart();
+        }
+
+        renderCart();
+    </script>
+</body>
+</html>

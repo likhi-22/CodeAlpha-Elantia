@@ -1,0 +1,320 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elantia Home</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #e6d6f7;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff0fa;
+            padding: 12px 40px;
+            box-shadow: 0 2px 8px rgba(191, 167, 230, 0.10);
+            border-top-left-radius: 24px;
+        }
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo img {
+            height: 48px;
+            margin-right: 12px;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        .navbar .nav-links a {
+            color: #6d3a7c;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.2s;
+        }
+        .navbar .nav-links a:hover {
+            color: #a16ae8;
+        }
+        .main-content {
+            display: flex;
+            /* Remove fixed height to allow sidebar to grow with content */
+            margin-top: 0;
+        }
+        .sidebar {
+            background: #fff0fa;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 24px;
+            box-shadow: 2px 0 10px rgba(191, 167, 230, 0.10);
+            padding: 40px 0 40px 0;
+            width: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Remove fixed height and min-height */
+            height: auto;
+            min-height: 100%;
+            justify-content: space-between;
+        }
+        .sidebar .category {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .sidebar .category img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 8px;
+        }
+        .sidebar .category h2 {
+            color: #6d3a7c;
+            font-size: 1.15rem;
+            margin: 0;
+        }
+        body, html {
+            height: 100%;
+        }
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .category-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        .category-section h2 {
+            color: #1a2b3c;
+            margin-bottom: 16px;
+            text-align: left;
+            font-size: 1.6rem;
+        }
+        .subcategory-title {
+            color: #222;
+            font-size: 1.15rem;
+            margin: 24px 0 12px 0;
+            text-align: left;
+            font-weight: bold;
+        }
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin-bottom: 16px;
+        }
+        .product {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 16px 16px 12px 16px;
+            text-align: center;
+            width: 260px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .product img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #bfa7e6;
+            background: #f7f2fa;
+        }
+        .product .product-title {
+            font-size: 1.08rem;
+            color: #222;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .product .price {
+            color: #1a8c3a;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .product button {
+            background: #1a8c3a;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 0;
+            width: 100%;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .product button:hover {
+            background: #146c2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="{% static 'logo.jpg' %}" alt="Elantia Logo">
+                <span style="font-size: 2rem; color: #6d3a7c; font-weight: bold;">Elantia</span>
+            </div>
+            <div class="nav-links">
+                <a href="/users/cart/" id="cart-link">Add to Cart</a>
+                <a href="/users/orders/" id="orders-link">My Orders</a>
+                <a href="/users/location/">Location</a>
+                <a href="/users/logout/" id="logout-link" style="color:#b23b3b;font-weight:bold;">Log Out</a>
+            </div>
+        </nav>
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="category" id="men-category">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" alt="Men's Fashion">
+                    <h2>Men's Fashion</h2>
+                </div>
+                <div class="category" id="women-category">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922561.png" alt="Women's Fashion">
+                    <h2>Women's Fashion</h2>
+                </div>
+                <div class="category" id="kids-category">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922556.png" alt="Kids' Fashion">
+                    <h2>Kids' Fashion</h2>
+                </div>
+            </div>
+            <div class="content-area">
+                <div class="category-section" id="men-section">
+                    <h2>Men's Fashion</h2>
+                    <div class="subcategory-title">Footwear</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 'sh1.jpg' %}" alt="Comfort Slip-on Shoes"><div class="product-title">Comfort Slip-on Shoes</div><div class="price">₹1,499</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'sh2.jpg' %}" alt="Premium Sports Shoes"><div class="product-title">Premium Sports Shoes</div><div class="price">₹2,999</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'sh3.jpg' %}" alt="Classic Formal Shoes"><div class="product-title">Classic Formal Shoes</div><div class="price">₹2,499</div><button>Add to Cart</button></div>
+                    </div>
+                    <div class="subcategory-title">Shirts</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 's1.jpg' %}" alt="Casual Plaid Shirt"><div class="product-title">Blue Work Shirt</div><div class="price">₹1,799</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 's2.jpg' %}" alt="Navy Striped Shirt"><div class="product-title">Navy Striped Shirt</div><div class="price">₹1,599</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 's3.jpg' %}" alt="Blue Work Shirt"><div class="product-title">Casual Plaid Shirt</div><div class="price">₹1,899</div><button>Add to Cart</button></div>
+                    </div>
+                    <div class="subcategory-title">Pants</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 'p1.jpg' %}" alt="Grey Formal Pants"><div class="product-title">Grey Formal Pants</div><div class="price">₹2,299</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'p2.jpg' %}" alt="Grey Casual Pants"><div class="product-title">Grey Casual Pants</div><div class="price">₹1,999</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'p3.jpg' %}" alt="Black Cargo Pants"><div class="product-title">Black Cargo Pants</div><div class="price">₹2,499</div><button>Add to Cart</button></div>
+                    </div>
+                </div>
+                <div class="category-section" id="women-section" style="display:none;">
+                    <h2>Women's Fashion</h2>
+                    <div class="subcategory-title">Traditional</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 'wom1.jpg' %}" alt="Traditional Dress 1"><div class="product-title">Traditional Dress 1</div><div class="price">₹1,299</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'wom2.jpg' %}" alt="Traditional Dress 2"><div class="product-title">Traditional Dress 2</div><div class="price">₹1,399</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'wom3.jpg' %}" alt="Traditional Dress 3"><div class="product-title">Traditional Dress 3</div><div class="price">₹1,499</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'wom4.jpg' %}" alt="Traditional Dress 4"><div class="product-title">Traditional Dress 4</div><div class="price">₹1,599</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'wom5.jpg' %}" alt="Traditional Dress 5"><div class="product-title">Traditional Dress 5</div><div class="price">₹1,699</div><button>Add to Cart</button></div>
+                    </div>
+                    <div class="subcategory-title">Western</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 'wes1.jpg' %}" alt="Western Dress 1"><div class="product-title">Western Dress 1</div><div class="price">₹999</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'wes2.jpg' %}" alt="Western Dress 2"><div class="product-title">Western Dress 2</div><div class="price">₹1,099</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'wes3.jpg' %}" alt="Western Dress 3"><div class="product-title">Western Dress 3</div><div class="price">₹1,199</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'wes4.jpg' %}" alt="Western Dress 4"><div class="product-title">Western Dress 4</div><div class="price">₹1,299</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'wes5.jpg' %}" alt="Western Dress 5"><div class="product-title">Western Dress 5</div><div class="price">₹1,399</div><button>Add to Cart</button></div>
+                    </div>
+                    <div class="subcategory-title">Accessories</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 'acc1.jpg' %}" alt="Accessory 1"><div class="product-title">Accessory 1</div><div class="price">₹299</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'acc2.jpg' %}" alt="Accessory 2"><div class="product-title">Accessory 2</div><div class="price">₹399</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'acc3.jpg' %}" alt="Accessory 3"><div class="product-title">Accessory 3</div><div class="price">₹499</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'acc4.jpg' %}" alt="Accessory 4"><div class="product-title">Accessory 4</div><div class="price">₹599</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'acc5.jpg' %}" alt="Accessory 5"><div class="product-title">Accessory 5</div><div class="price">₹699</div><button>Add to Cart</button></div>
+                    </div>
+                </div>
+                <div class="category-section" id="kids-section" style="display:none;">
+                    <h2>Kids' Fashion</h2>
+                    <div class="subcategory-title">Girls</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 'gir1.jpg' %}" alt="Girl Dress 1"><div class="product-title">Girl Dress 1</div><div class="price">₹799</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'gir2.jpg' %}" alt="Girl Dress 2"><div class="product-title">Girl Dress 2</div><div class="price">₹899</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'gir3.jpg' %}" alt="Girl Dress 3"><div class="product-title">Girl Dress 3</div><div class="price">₹999</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'gir4.jpg' %}" alt="Girl Dress 4"><div class="product-title">Girl Dress 4</div><div class="price">₹1,099</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'gir5.jpg' %}" alt="Girl Dress 5"><div class="product-title">Girl Dress 5</div><div class="price">₹1,199</div><button>Add to Cart</button></div>
+                    </div>
+                    <div class="subcategory-title">Boys</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 'boy1.jpg' %}" alt="Boy Dress 1"><div class="product-title">Boy Dress 1</div><div class="price">₹799</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'boy2.jpg' %}" alt="Boy Dress 2"><div class="product-title">Boy Dress 2</div><div class="price">₹899</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'boy3.jpg' %}" alt="Boy Dress 3"><div class="product-title">Boy Dress 3</div><div class="price">₹999</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'boy4.jpg' %}" alt="Boy Dress 4"><div class="product-title">Boy Dress 4</div><div class="price">₹1,099</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'boy5.jpg' %}" alt="Boy Dress 5"><div class="product-title">Boy Dress 5</div><div class="price">₹1,199</div><button>Add to Cart</button></div>
+                    </div>
+                    <div class="subcategory-title">Toys</div>
+                    <div class="products">
+                        <div class="product"><img src="{% static 'toy1.jpg' %}" alt="Toy 1"><div class="product-title">Toy 1</div><div class="price">₹299</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'toy2.jpg' %}" alt="Toy 2"><div class="product-title">Toy 2</div><div class="price">₹399</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'toy3.jpg' %}" alt="Toy 3"><div class="product-title">Toy 3</div><div class="price">₹499</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'toy4.jpg' %}" alt="Toy 4"><div class="product-title">Toy 4</div><div class="price">₹599</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'toy5.jpg' %}" alt="Toy 5"><div class="product-title">Toy 5</div><div class="price">₹699</div><button>Add to Cart</button></div>
+                        <div class="product"><img src="{% static 'toy6.jpg' %}" alt="Toy 6"><div class="product-title">Toy 6</div><div class="price">₹799</div><button>Add to Cart</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Add to Cart functionality (localStorage for demo)
+        document.querySelectorAll('.product button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const product = this.parentElement;
+                const name = product.querySelector('img').alt || 'Product';
+                const price = product.querySelector('.price').innerText;
+                const img = product.querySelector('img').getAttribute('src');
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                cart.push({ name, price, img });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                window.location.href = '/users/cart/'; // Redirect to cart page after adding
+            });
+        });
+
+        // Sidebar category click filtering
+        document.getElementById('men-category').onclick = function() {
+            document.getElementById('men-section').style.display = 'block';
+            document.getElementById('women-section').style.display = 'none';
+            document.getElementById('kids-section').style.display = 'none';
+        };
+        document.getElementById('women-category').onclick = function() {
+            document.getElementById('men-section').style.display = 'none';
+            document.getElementById('women-section').style.display = 'block';
+            document.getElementById('kids-section').style.display = 'none';
+        };
+        document.getElementById('kids-category').onclick = function() {
+            document.getElementById('men-section').style.display = 'none';
+            document.getElementById('women-section').style.display = 'none';
+            document.getElementById('kids-section').style.display = 'block';
+        };
+        // Show all by default
+        document.getElementById('men-section').style.display = 'block';
+        document.getElementById('women-section').style.display = 'none';
+        document.getElementById('kids-section').style.display = 'none';
+    </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elantia - My Orders</title>
+    <style>
+        body {
+            background: #f8f8fc;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .orders-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(191, 167, 230, 0.10);
+            padding: 32px 32px 24px 32px;
+        }
+        .orders-title {
+            font-size: 2rem;
+            color: #1a2b3c;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+        .order-item {
+            display: flex;
+            align-items: flex-start;
+            border-bottom: 1px solid #eee;
+            padding: 18px 0 18px 0;
+        }
+        .order-item img {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-right: 18px;
+            background: #f7f2fa;
+            border: 1px solid #e0d7f7;
+        }
+        .order-item-details {
+            flex: 1;
+        }
+        .order-item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #222;
+        }
+        .order-item-qty {
+            font-size: 1rem;
+            color: #444;
+            margin: 6px 0 0 0;
+        }
+        .order-item-price {
+            font-size: 1.1rem;
+            color: #222;
+            font-weight: 500;
+            margin-left: 16px;
+            white-space: nowrap;
+        }
+        .empty-orders {
+            text-align: center;
+            color: #888;
+            font-size: 1.2rem;
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="orders-container">
+        <div class="orders-title">My Orders</div>
+        <div id="orders-list"></div>
+    </div>
+    <script>
+        // Load orders from localStorage
+        let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const ordersListDiv = document.getElementById('orders-list');
+
+        function renderOrders() {
+            if (orders.length === 0) {
+                ordersListDiv.innerHTML = '<div class="empty-orders">You have not placed any orders yet.</div>';
+                return;
+            }
+            let html = '';
+            orders.forEach(order => {
+                order.forEach(item => {
+                    let price = parseInt(item.price.replace(/[^\d]/g, ''));
+                    html += `<div class="order-item">
+                        <img src="${item.img || '{% static 'logo.jpg' %}'}" alt="${item.name.toLowerCase().replace(/ /g,'-')}">
+                        <div class="order-item-details">
+                            <div class="order-item-title">${item.name}</div>
+                            <div class="order-item-qty">Quantity: 1</div>
+                        </div>
+                        <div class="order-item-price">₹${price.toLocaleString()}</div>
+                    </div>`;
+                });
+            });
+            ordersListDiv.innerHTML = html;
+        }
+        renderOrders();
+    </script>
+</body>
+</html>
