@@ -59,6 +59,11 @@ ecommerce/       # Main Django project settings and configuration
 5. **Visit the app**
    Open your browser and go to:
    [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+<img width="1750" height="893" alt="Screenshot 2025-07-16 194122" src="https://github.com/user-attachments/assets/c22b14c8-6a97-496b-b0d8-b3a5028f1ff4" />
+<img width="1767" height="913" alt="Screenshot 2025-07-16 
+194205" src="https://github.com/user-attachments/assets/e230851c-4065-4408-93ce-2ceb97a19100" />
+<img width="1475" height="593" alt="Screenshot 2025-07-16 194230" src="https://github.com/user-attachments/assets/16814679-ae85-439a-9a91-adb9556a03c1" />
+<img width="1745" height="888" alt="Screenshot 2025-07-16 194251" src="https://github.com/user-attachments/assets/80b444f2-63c7-470c-9165-77de3404dff9" />
 
 📜 License
 
