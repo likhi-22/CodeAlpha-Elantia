@@ -32,7 +32,7 @@ ecommerce/       # Main Django project settings and configuration
 
 1. Clone the repository
 
-   bash
+     ``` bash
    git clone https://github.com/your-username/elantia.git
    cd elantia
    
@@ -40,7 +40,7 @@ ecommerce/       # Main Django project settings and configuration
 2. Install dependencies
    Make sure Python and Django are installed. You can install Django using pip:
 
-   bash
+     ``` bash
    pip install django
 
 
